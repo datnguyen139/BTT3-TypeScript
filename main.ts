@@ -1,33 +1,15 @@
-const newTask = document.querySelector(".newtask");
-const newList = document.querySelector(".middle");
+// export {}
 
-let todo: object[] = [];
+const newTask = (<HTMLInputElement>document.querySelector(".newtask"));
+const newList = (<HTMLScriptElement>document.querySelector(".middle"));
 
-todo = JSON.parse(localStorage.getItem("listTodo"));
-
-let listTodo: {
-  task: string,
-  complete: string,
+interface ListTodo {
+  task: string
+  complete: string
 };
 
-newTask.addEventListener('keyup', function(event){
-  let inputValue: string = newTask.value.trim();
-  if (event.key == "Enter" && inputValue == "") {
-    alert("please fill in task input");
-} else if (event.key === "Enter" && inputValue !== "") {
-    if (!todo) {
-        todo = [];
-    }
-     listTodo = {
-        task:inputValue,
-        complete: "active"
-    }
-    todo.push(listTodo)
-    localStorage.setItem("listTodo", JSON.stringify(todo));
-    newTask.value = "";
-    ShowListTask()
-  }
-})
+let todo: ListTodo[];
+todo = JSON.parse((localStorage.getItem("listTodo")||'{}'));
 
 function ShowListTask (){
   let html: string = "";
@@ -43,3 +25,23 @@ function ShowListTask (){
     newList.innerHTML = html;
   }
 }
+ShowListTask()
+
+newTask.addEventListener('keyup', function(event){
+  let inputValue: string = newTask.value.trim();
+  if (event.key == "Enter" && inputValue == "") {
+    alert("please fill in task input");
+} else if (event.key === "Enter" && inputValue !== "") {
+    if (!todo) {
+        todo = [];
+    }
+     let obj: ListTodo = {
+        task:inputValue,
+        complete: "active"
+    }
+    todo.push(obj)
+    localStorage.setItem("listTodo", JSON.stringify(todo));
+    newTask.value = "";
+    ShowListTask()
+  }
+})

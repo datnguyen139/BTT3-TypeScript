@@ -1,27 +1,9 @@
+// export {}
 var newTask = document.querySelector(".newtask");
 var newList = document.querySelector(".middle");
-var todo = [];
-todo = JSON.parse(localStorage.getItem("listTodo"));
-var listTodo;
-newTask.addEventListener('keyup', function (event) {
-    var inputValue = newTask.value.trim();
-    if (event.key == "Enter" && inputValue == "") {
-        alert("please fill in task input");
-    }
-    else if (event.key === "Enter" && inputValue !== "") {
-        if (!todo) {
-            todo = [];
-        }
-        listTodo = {
-            task: inputValue,
-            complete: "active"
-        };
-        todo.push(listTodo);
-        localStorage.setItem("listTodo", JSON.stringify(todo));
-        newTask.value = "";
-        ShowListTask();
-    }
-});
+;
+var todo;
+todo = JSON.parse((localStorage.getItem("listTodo") || '{}'));
 function ShowListTask() {
     var html = "";
     if (todo) {
@@ -31,3 +13,23 @@ function ShowListTask() {
         newList.innerHTML = html;
     }
 }
+ShowListTask();
+newTask.addEventListener('keyup', function (event) {
+    var inputValue = newTask.value.trim();
+    if (event.key == "Enter" && inputValue == "") {
+        alert("please fill in task input");
+    }
+    else if (event.key === "Enter" && inputValue !== "") {
+        if (!todo) {
+            todo = [];
+        }
+        var obj = {
+            task: inputValue,
+            complete: "active"
+        };
+        todo.push(obj);
+        localStorage.setItem("listTodo", JSON.stringify(todo));
+        newTask.value = "";
+        ShowListTask();
+    }
+});
